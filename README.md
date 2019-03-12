@@ -1,13 +1,14 @@
 # app-event
-Adds Full Rest-API support for Tickera Plugin
+This plugin adds Full REST-API support for Tickera Events Plugin
 
 ## Features:
 	- Adds rest-api support for Tickera Events CPT
 	- Supports Ticket purchase within Event
 	- Supports featured image of Event
-	- Supports AppPresser.com framework: https://apppresser.com
+	- Supports AppPresser.com framework
 
 *Tickera plugin is required for this to work. Please visit https://tickera.com/ for more information.
+*Works best with AppPresser: easily create your own WordPress application with no coding experience, visit https://apppresser.com for more information.
 	
 ## How it works - AppPresser
 1. Simply add a custom page and choose "WordPress Posts" and the following URL as API endpoint: 
