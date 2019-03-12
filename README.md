@@ -5,15 +5,19 @@ Adds Full Rest-API support for Tickera Plugin
 	- Adds rest-api support for Tickera Events CPT
 	- Supports Ticket purchase within Event
 	- Supports featured image of Event
-	- Supports AppPresser.com framework (WP Posts custom page)
+	- Supports AppPresser.com framework: https://apppresser.com
+
+*Tickera plugin is required for this to work. Please visit https://tickera.com/ for more information.
 	
 ## How it works - AppPresser
-Simply add a custom page and choose "WordPress Posts" and the following URL as API endpoint: 
+1. Simply add a custom page and choose "WordPress Posts" and the following URL as API endpoint: 
 https://yourdomain.com/wp-json/wp/v2/tc_events
 
-You can also enable sliders.
+2. Copy the custom CSS from the 'public' folder inside this plugin and paste it into the 'Custom CSS' section in MyApppresser > Colors. Change the colors of the button and icons to match your theme.
+
+3. You are done. Enjoy the blazing fast experience of viewing/searching events and buying tickets!
 	
 ## Support
 This plugin works out of the box and should works best with AppPresser framework or Ionic Framework. Should you stumble on issues/bugs, please open a support ticket on Github.
 
-More information: https://roadmapstudios.com/product/app-event
+More information on this plugin: https://roadmapstudios.com/product/app-event
