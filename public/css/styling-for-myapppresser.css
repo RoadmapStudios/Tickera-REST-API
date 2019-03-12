@@ -1,0 +1,100 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+
+ Copy everything below this line and paste it the 'Custom CSS' section in myapppresser. You can change the button/icons colors to match your theme color.
+ ------------------------------------------------
+
+div.selection{
+padding:0px;
+}
+
+.ion-page ion-content{
+color: #000;
+}
+
+div.new-extra-fields-event-contact{
+text-align:center;
+}
+
+span.event-contact a {
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    background: #b21917;
+    display: inline-block;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+div.new-extra-fields-rpolicy{
+font-size:14px;
+margin-bottom:20px;
+padding:10px;
+text-align:center;
+}
+
+span.refund-policy {
+    font-style: italic;
+    text-transform: uppercase;
+}
+
+span.rp-title {
+    color: #b21917;
+    font-weight: bold;
+}
+
+div.selection h2{
+text-align:center;
+}
+
+div.tc_the_content_pre span.tc_event_date_title_front{
+width: 100%;
+display:block;
+font-size:16px;
+text-align:center;
+text-transform:uppercase;
+}
+
+div.tc_the_content_pre span.tc_event_location_title_front{
+width: 100%;
+display:block;
+font-size:16px;
+text-align:center;
+text-transform:uppercase;
+}
+
+p, .item p{
+color: #000;
+}
+
+div.tickera{
+background-color: #fafafa;
+padding:10px;
+}
+
+table.event_tickets th{
+font-size:14px;
+}
+
+ul.toggleinfo{
+display:none;
+}
+
+a.product_type_simple{
+background: #b21917;
+color:#fff;
+text-decoration:none;
+padding:10px;
+border-radius:4px
+}
+
+i.fa-clock-o, i.fa-map-marker {
+    color: #b21917;
+    margin-right:10px;
+    margin-top:10px;
+    font-size:20px;
+}
