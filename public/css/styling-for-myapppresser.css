@@ -2,8 +2,12 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
 
- Copy everything below this line and paste it the 'Custom CSS' section in myapppresser. You can change the button/icons colors to match your theme color.
+ Copy everything below this line and paste it in the 'Custom CSS' section in myapppresser. You can change the button/icons colors to match your theme color.
  ------------------------------------------------
+
+.post-list ion-slides {
+    height: 300px !important;
+}
 
 div.selection{
 padding:0px;
