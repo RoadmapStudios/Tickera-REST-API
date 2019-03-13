@@ -8,9 +8,9 @@
  * @copyright         Copyright © 2019 Roadmap Studios
  *
  * @wordpress-plugin
- * Plugin Name:       App Event
+ * Plugin Name:       AppEvent
  * Plugin URI:        https://eventpro.ky/
- * Description:       This is plugin for connecting EventPro.
+ * Description:       This plugin adds full REST-API support for Tickera Events Posts. Works best with AppPresser.
  * Version:           1.0.0
  * Author:            Roadmap Studios
  * Author URI:        https://roadmapstudios.com/
