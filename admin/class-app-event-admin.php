@@ -161,4 +161,13 @@ class App_Event_Admin {
 		}
 	}
 
+	public function app_event_update_post( $post_ID, $post, $update ) {
+		// $msg  = 'Is this un update? ';
+		// $msg .= $update ? 'Yes.' : 'No.';
+		// wp_die( $msg );
+	}
+	public function app_event_add_tax_to_api() {
+		$mytax               = get_taxonomy( 'event_category' );
+		$mytax->show_in_rest = true;
+	}
 }
