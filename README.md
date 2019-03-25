@@ -14,8 +14,16 @@ This plugin adds Full REST-API support for Tickera Events Plugin
 1. Simply add a custom page and choose "WordPress Posts" and the following URL as API endpoint: 
 https://yourdomain.com/wp-json/wp/v2/tc_events
 
-For categories, add /event_category/ behind the above slug. You can also specify the category with its ID, like this:
+For categories, add "event_category=ID" behind the slug. Example:
 https://yourdomain.com/wp-json/wp/v2/tc_events?event_category=248
+
+To filter the events based on Event date instead of Publishing date, use this endpoint:
+https://yourdomain.com/wp-json/wp/v2/tc_events?filter[meta_key]=event_date_time&order=asc 
+Or use "desc" at the end to filter events on descending date.
+
+To filter on category and Event date, use the endpoint like this:
+https://yourdomain.com/wp-json/wp/v2/tc_events?event_category=248&filter[meta_key]=event_date_time&order=asc
+
 
 2. Copy the custom CSS from the 'public' folder inside this plugin and paste it into the 'Custom CSS' section in MyApppresser > Colors. Change the colors of the button and icons to match your theme.
 

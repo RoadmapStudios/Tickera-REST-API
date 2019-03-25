@@ -73,9 +73,24 @@ class App_Event_Admin {
 		wp_enqueue_script( $this->app_event, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+	
+	/**
+	 * Function to filter events based on event date in endpoint
+	 *
+	 * @param mixed  $query_vars generated for rest api.
+	 * @param string $request resquested parameters for the api call.
+	 */
+	public function app_event_meta_vars( $query_vars, $request ) {
+		$orderby = $request->get_param( 'filter' );
+		if ( isset( $orderby ) && $orderby['meta_key'] != '' ) {
+			$query_vars['orderby']  = 'meta_value';
+			$query_vars['meta_key'] = $orderby['meta_key'];
+		}
+		return $query_vars;
+	}
 
 	/**
-	 * Function to be called at activation of hook to activate api
+	 * Function to register Event posttype in WP API
 	 *
 	 * @param mixed  $args argument passed by event.
 	 * @param string $post_type post type.
@@ -166,6 +181,12 @@ class App_Event_Admin {
 		// $msg .= $update ? 'Yes.' : 'No.';
 		// wp_die( $msg );
 	}
+	
+	/**
+	 * Function to enable taxonomy with rest API for custom event.
+	 *
+	 * @return void
+	 */
 	public function app_event_add_tax_to_api() {
 		$mytax               = get_taxonomy( 'event_category' );
 		$mytax->show_in_rest = true;
