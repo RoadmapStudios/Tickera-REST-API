@@ -31,5 +31,3 @@ https://yourdomain.com/wp-json/wp/v2/tc_events?event_category=248&filter[meta_ke
 	
 ## Support
 This plugin works out of the box and should works best with AppPresser framework or Ionic Framework. Should you stumble on issues/bugs, please open a support ticket on Github.
-
-More information on this plugin: https://roadmapstudios.com/product/app-event
