@@ -30,4 +30,4 @@ https://yourdomain.com/wp-json/wp/v2/tc_events?event_category=248&filter[meta_ke
 3. You are done. Enjoy the blazing fast experience of viewing/searching events and buying tickets!
 	
 ## Support
-This plugin works out of the box and should works best with AppPresser framework or Ionic Framework. Should you stumble on issues/bugs, please open a support ticket on Github.
+This plugin works out of the box and should works best with AppPresser framework or Ionic Framework. Should you stumble on issues/bugs, please open a support ticket <a href="https://github.com/RoadmapStudios/app-event/issues">here</a> .
