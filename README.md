@@ -1,4 +1,4 @@
-# app-event
+# Tickera REST API
 This plugin adds Full REST-API support for Tickera Events Plugin
 
 ## Features:
