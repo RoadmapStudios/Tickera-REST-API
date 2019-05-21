@@ -33,9 +33,9 @@ class App_Event_Admin {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    1.0.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @since    1.0.0define_public_hooks
+	 * @access   privadefine_public_hooks
+	 * @var      strindefine_public_hooks version of this plugin.
 	 */
 	private $version;
 
@@ -73,9 +73,9 @@ class App_Event_Admin {
 		wp_enqueue_script( $this->app_event, plugin_dir_url( __FILE__ ) . 'js/plugin-name-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
-	
+
 	/**
-	 * Function to filter events based on event date in endpoint
+	 * Function to be called before query is executed
 	 *
 	 * @param mixed  $query_vars generated for rest api.
 	 * @param string $request resquested parameters for the api call.
@@ -90,7 +90,32 @@ class App_Event_Admin {
 	}
 
 	/**
-	 * Function to register Event posttype in WP API
+	 * Function to be called at activation of hook to activate api
+	 *
+	 * @param mixed  $args argument passed by event.
+	 * @param string $post_type post type.
+	 */
+	public function app_event_rest_end_point( $routes ) {
+		foreach ( [ 'tc_events' ] as $type ) {
+			if ( ! ( $route =& $routes[ '/wp/v2/' . $type ] ) ) {
+					continue;
+			}
+
+			// Allow ordering by my meta value
+			$route[0]['args']['orderby']['enum'][] = 'meta_value_num';
+
+			// Allow only the meta keys that I want
+			$route[0]['args']['meta_key'] = array(
+				'type' => 'datetime',
+				'enum' => [ 'event_date_time' ],
+			);
+		}
+
+		return $routes;
+	}
+
+	/**
+	 * Function to be called at activation of hook to activate api
 	 *
 	 * @param mixed  $args argument passed by event.
 	 * @param string $post_type post type.
@@ -101,6 +126,11 @@ class App_Event_Admin {
 			$args['rest_base']             = 'tc_events';
 			$args['rest_controller_class'] = 'WP_REST_Posts_Controller';
 		}
+		// if ( 'product' === $post_type ) {
+		// $args['show_in_rest']          = true;
+		// $args['rest_base']             = 'product';
+		// $args['rest_controller_class'] = 'WP_REST_Posts_Controller';
+		// }
 		return $args;
 	}
 
@@ -111,11 +141,125 @@ class App_Event_Admin {
 	 */
 	public function app_event_update_api() {
 		// Edit content of API.
+		// register_rest_field(
+		// 'product',
+		// 'content'
+		// );
+		register_rest_route(
+			'appevent/v2',
+			'/my-tickets/(?P<id>\d+)/(?P<platform>[a-zA-Z]+)',
+			array(
+				'methods'  => 'GET',
+				'callback' => function( $request ) {
+					global $tc, $wp;
+					$upload_dir = wp_upload_dir();
+					$user_id = $request['id'];
+					$platform = $request['platform'];
+					$customer_orders = get_posts(
+						array(
+							'numberposts' => -1,
+							'meta_key'    => '_customer_user',
+							'meta_value'  => $user_id,
+							'post_type'   => wc_get_order_types(),
+							'post_status' => array_keys( wc_get_order_statuses() ),
+						)
+					);
+					$allTickets      = array();
+					$i               = 0;
+
+					foreach ( $customer_orders as $post ) {
+						$order = new TC_Order( $post->ID );
+						// $args            = array(
+						// 'posts_per_page' => -1,
+						// 'orderby'        => 'post_date',
+						// 'order'          => 'ASC',
+						// 'post_type'      => 'tc_tickets_instances',
+						// 'post_parent'    => $order->details->ID,
+						// );
+						// $tickets         = get_posts( $args );
+						$order_attendees = TC_Orders::get_tickets_ids( $post->ID );
+						foreach ( $order_attendees as $order_attendee_id ) {
+
+							$ticket_type_id   = get_post_meta( $order_attendee_id, 'ticket_type_id', true );
+							$ticket_type_name = get_the_title( $ticket_type );
+
+							$ticket_type       = new TC_Ticket( $ticket_type_id );
+							$ticket_type_title = $ticket_type->details->post_title;
+							$ticket_type_title = apply_filters( 'tc_checkout_owner_info_ticket_title', $ticket_type_title, $ticket_type_id, array(), $order_attendee_id );
+
+							$event_id   = get_post_meta( $order_attendee_id, 'event_id', true );
+							$event      = new TC_Event( $event_id );
+							$event_name = $event->details->post_title;
+
+							$first_name  = get_post_meta( $order_attendee_id, 'first_name', true );
+							$last_name   = get_post_meta( $order_attendee_id, 'last_name', true );
+							$email       = get_post_meta( $order_attendee_id, 'owner_email', true );
+							$ticket_code = get_post_meta( $order_attendee_id, 'ticket_code', true );
+
+							$order_key    = isset( $wp->query_vars['tc_order_key'] ) ? $wp->query_vars['tc_order_key'] : strtotime( $order->details->post_date );
+							$download_url = apply_filters( 'tc_download_ticket_url_front', wp_nonce_url( trailingslashit( $tc->get_order_slug( true ) ) . $order->details->post_title . '/' . $order_key . '/?download_ticket=' . $ticket_id . '&order_key=' . $order_key, 'download_ticket_' . $ticket_id . '_' . $order_key, 'download_ticket_nonce' ), $order_key, $order_attendee_id );
+
+							$displayFileName = $upload_dir['url'] . '/' . $ticket_code . '.pkpass';
+							if ( $platform == 'android' ) {
+								$walletURL = 'https://walletpass.io?u=' . $displayFileName;
+								$walletImg = 'https://www.walletpasses.io/badges/badge_web_generic_en@2x.png';
+							} elseif ( $platform == 'ios' ) {
+								$walletURL = $displayFileName;
+								$walletImg = plugin_dir_url( __DIR__ ) . 'assets/img/add-to-apple-wallet.jpg';
+							}
+
+							$allTickets[ $i ]['ticket_id']        = $order_attendee_id;
+							$allTickets[ $i ]['event_name']       = $event_name;
+							$allTickets[ $i ]['ticket_type'] = $ticket_type_title;
+							$allTickets[ $i ]['first_name']       = $first_name;
+							$allTickets[ $i ]['last_name']        = $last_name;
+							$allTickets[ $i ]['email']            = $email;
+							$allTickets[ $i ]['ticket_code']      = $ticket_code;
+							$allTickets[ $i ]['download_url']     = str_replace( '&amp;', '&', $download_url );
+							$allTickets[ $i ]['walletURL']      = str_replace( '&amp;', '&', $walletURL );
+							$allTickets[ $i ]['walletImg']      = $walletImg;
+							$i++;
+						}
+
+						// echo 'count($tickets): ' . count( $tickets );
+						// print_r( $tickets );
+						// foreach ( $tickets as $ticket ) {
+						// $ticket_id      = $ticket->ID;
+						// $ticket_type_id = get_post_meta( $ticket_id, 'ticket_type_id', true );
+						// $ticket_type    = new TC_Ticket( $ticket_type_id );
+						// $event_id       = $ticket_type->get_ticket_event( apply_filters( 'tc_ticket_type_id', $ticket_type_id ) );
+						// $event          = new TC_Event( $event_id );
+						// $event_name     = $event->details->post_title;
+						// $ticket_type_title = $ticket_type->details->post_title;
+						// echo '<br /> $ticket_type_title: ' . $ticket_type_title;
+						// $ticket_type_title = apply_filters( 'tc_checkout_owner_info_ticket_title', $ticket_type_title, $ticket_type_id, array(), $ticket_id );
+						// $cart_info  = get_post_meta( $order->details->ID, 'tc_cart_info', true );
+						// $buyer_data = $cart_info['buyer_data'];
+						// $buyer_name = $buyer_data['first_name_post_meta'] . ' ' . $buyer_data['last_name_post_meta'];
+						// echo '$order->details->ID: ' . $order->details->ID;
+						// echo '<br /> $event_id: ' . $event_id;
+						// echo '<br /> $event_name: ' . $event_name;
+						// echo '<br /> $ticket_type_title: ' . $ticket_type_title;
+						// echo '<br /> $buyer_name: ' . $buyer_name;
+						// $order_key = isset( $wp->query_vars['tc_order_key'] ) ? $wp->query_vars['tc_order_key'] : strtotime( $order->details->post_date );
+						// $download_url = apply_filters( 'tc_download_ticket_url_front', wp_nonce_url( trailingslashit( $tc->get_order_slug( true ) ) . $order->details->post_title . '/' . $order_key . '/?download_ticket=' . $ticket_id . '&order_key=' . $order_key, 'download_ticket_' . $ticket_id . '_' . $order_key, 'download_ticket_nonce' ), $order_key, $ticket_id );
+						// echo '<br /> $download_url: ' . $download_url;
+						// }
+					}
+
+					echo json_encode( $allTickets );
+					die();
+				},
+			)
+		);
+
+		// Edit content of API.
 		register_rest_field(
 			'tc_events',
 			'content',
 			array(
 				'get_callback'    => function( $object, $field_name, $request ) {
+
 					return $this->get_event_update( $object, $field_name, $request );
 				},
 				'update_callback' => null,
@@ -164,24 +308,21 @@ class App_Event_Admin {
 				'/<a\b(?=\s) # capture the open tag
 			(?=(?:[^>=]|=\'[^\']*\'|="[^"]*"|=[^\'"][^\s>]*)*?\shref="(\/wp-json\/wp\/v2\/[^"]*)) # get the href attribute
 			(?:[^>=]|=\'[^\']*\'|="[^"]*"|=[^\'"\s]*)*"\s?> # get the entire tag
-			.*?<\/a>/imx', $content, $matches
+			.*?<\/a>/imx',
+				$content,
+				$matches
 			);
 			$site_url = get_site_url();
 			foreach ( $matches[1] as $skew ) {
-				$content = str_replace( $skew, $site_url . $skew, $content );
+				$nskew   = str_replace( '/wp-json/wp/v2/tc_events', '', $skew );
+				$link    = $object['link'] . $nskew;
+				$content = str_replace( $skew, $link, $content );
 			}
 			$object['content']['rendered'] = $content;
 			return $object['content'];
-
 		}
 	}
 
-	public function app_event_update_post( $post_ID, $post, $update ) {
-		// $msg  = 'Is this un update? ';
-		// $msg .= $update ? 'Yes.' : 'No.';
-		// wp_die( $msg );
-	}
-	
 	/**
 	 * Function to enable taxonomy with rest API for custom event.
 	 *

@@ -138,6 +138,7 @@ class App_Event {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_filter( 'rest_tc_events_query', $plugin_admin, 'app_event_meta_vars', 10, 2 );
 		$this->loader->add_filter( 'register_post_type_args', $plugin_admin, 'app_event_activate_api', 10, 2 );
 		$this->loader->add_action( 'rest_api_init', $plugin_admin, 'app_event_update_api' );
 		$this->loader->add_action( 'save_post', $plugin_admin, 'app_event_update_post', 10, 3 );
