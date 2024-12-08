@@ -4,19 +4,19 @@
  *
  * @link              https://roadmapstudios.com/
  * @since             1.0.0
- * @package           App_Event
+ * @package           TC_Events_API
  * @copyright         Copyright © 2019 Roadmap Studios
  *
  * @wordpress-plugin
- * Plugin Name:       AppEvent
+ * Plugin Name:       Tickera Events - REST API
  * Plugin URI:        https://eventpro.ky/
- * Description:       This plugin adds full REST-API support for Tickera Events Posts. Works best with AppPresser.
- * Version:           1.0.0
+ * Description:       This plugin adds full REST-API support for Tickera Events Posts.
+ * Version:           1.1.0
  * Author:            Roadmap Studios
  * Author URI:        https://roadmapstudios.com/
  * License:           GNU General Public License v3.0
  * Domain Path:       /languages
- * Text Domain:       AppEvent
+ * Text Domain:       TC_Events_API
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.html
  */
 

@@ -5,16 +5,16 @@
  * @link       https://roadmapstudios.com/
  * @since      1.0.0
  *
- * @package    App_Event
- * @subpackage App_Event/includes
+ * @package    TC_Events_API
+ * @subpackage TC_Events_API/includes
  */
 
 /**
  * The core plugin class.
  *
  * @since      1.0.0
- * @package    App_Event
- * @subpackage App_Event/includes
+ * @package    TC_Events_API
+ * @subpackage TC_Events_API/includes
  * @author     Roadmap Studios
  */
 class App_Event {

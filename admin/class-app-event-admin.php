@@ -5,8 +5,8 @@
  * @link       https://roadmapstudios.com/
  * @since      1.0.0
  *
- * @package    App_Event
- * @subpackage App_Event/admin
+ * @package    TC_Events_API
+ * @subpackage TC_Events_API/admin
  */
 
 /**
@@ -15,8 +15,8 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    App_Event
- * @subpackage App_Event/admin
+ * @package    TC_Events_API
+ * @subpackage TC_Events_API/admin
  * @author     Roadmap Studios
  */
 class App_Event_Admin {
@@ -34,8 +34,8 @@ class App_Event_Admin {
 	 * The version of this plugin.
 	 *
 	 * @since    1.0.0define_public_hooks
-	 * @access   privadefine_public_hooks
-	 * @var      strindefine_public_hooks version of this plugin.
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
 
@@ -220,31 +220,6 @@ class App_Event_Admin {
 							$allTickets[ $i ]['walletImg']      = $walletImg;
 							$i++;
 						}
-
-						// echo 'count($tickets): ' . count( $tickets );
-						// print_r( $tickets );
-						// foreach ( $tickets as $ticket ) {
-						// $ticket_id      = $ticket->ID;
-						// $ticket_type_id = get_post_meta( $ticket_id, 'ticket_type_id', true );
-						// $ticket_type    = new TC_Ticket( $ticket_type_id );
-						// $event_id       = $ticket_type->get_ticket_event( apply_filters( 'tc_ticket_type_id', $ticket_type_id ) );
-						// $event          = new TC_Event( $event_id );
-						// $event_name     = $event->details->post_title;
-						// $ticket_type_title = $ticket_type->details->post_title;
-						// echo '<br /> $ticket_type_title: ' . $ticket_type_title;
-						// $ticket_type_title = apply_filters( 'tc_checkout_owner_info_ticket_title', $ticket_type_title, $ticket_type_id, array(), $ticket_id );
-						// $cart_info  = get_post_meta( $order->details->ID, 'tc_cart_info', true );
-						// $buyer_data = $cart_info['buyer_data'];
-						// $buyer_name = $buyer_data['first_name_post_meta'] . ' ' . $buyer_data['last_name_post_meta'];
-						// echo '$order->details->ID: ' . $order->details->ID;
-						// echo '<br /> $event_id: ' . $event_id;
-						// echo '<br /> $event_name: ' . $event_name;
-						// echo '<br /> $ticket_type_title: ' . $ticket_type_title;
-						// echo '<br /> $buyer_name: ' . $buyer_name;
-						// $order_key = isset( $wp->query_vars['tc_order_key'] ) ? $wp->query_vars['tc_order_key'] : strtotime( $order->details->post_date );
-						// $download_url = apply_filters( 'tc_download_ticket_url_front', wp_nonce_url( trailingslashit( $tc->get_order_slug( true ) ) . $order->details->post_title . '/' . $order_key . '/?download_ticket=' . $ticket_id . '&order_key=' . $order_key, 'download_ticket_' . $ticket_id . '_' . $order_key, 'download_ticket_nonce' ), $order_key, $ticket_id );
-						// echo '<br /> $download_url: ' . $download_url;
-						// }
 					}
 
 					echo json_encode( $allTickets );
